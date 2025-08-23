@@ -19,7 +19,9 @@ app.use(express.json());
 app.use(express.json()); is middleware that lets your Express app automatically parse incoming JSON request bodies into JavaScript objects so you can access them with req.body. ✅
 */
 app.use(cookieParser());
-
+app.use('/',(req,res)=>{
+    console.log('working');
+})
 app.use('/api/auth', authRoutes);
 app.use("/api/home",homeRoutes);
 app.use("/api/admin",adminRoutes);
