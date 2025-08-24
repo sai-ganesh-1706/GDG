@@ -3,71 +3,110 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth-middleware.js');
 
-router.get('/welcome',authMiddleware,(req,res) => {
-    const {username, userId, role} = req.userInfo;
+// Step 1
+router.get('/welcome', authMiddleware, (req, res) => {
+  const { username } = req.userInfo;
 
-    res.json({
-        message : "welcome to the home page! to discover secret key continue to /welcome/crack",
-        user : {
-            _id : userId,
-            username,
-            role
-        }
-    })
-});
-
-// Step 1 → (auth required)
-router.get("/welcome/crack", authMiddleware, (req, res) => {
-  res.set("X-Next-Path", "/secret"); // beginner clue: header
-  res.json({
-    message: "Welcome developer 👩‍💻",
-    hint: "Answer always does'nt lie in the Body"
-  });
-});
-
-// Step 2 → (cookie clue)
-router.get("/welcome/crack/secret", (req, res) => {
-  res.cookie("NextPath", "Parle-G");
-  res.json({
-    message: `Nice Start👏`,
-    hint: "Biscuits are Tasty🍪"
-  });
-});
-
-// Step 3 → (non-200 clue)
-router.get("/welcome/crack/secret/Parle-G", (req, res) => {
-  res.status(418).json({
-    fragment: "secret_part_1:shh_dont_tell_anyone_the_secret_key_is_",
-    hint: "Notice the 418 status code. Not all APIs return 200 😉"
-  });
-});
-
-// Step 4 → /clue_teapot (HTML metadata clue)
-router.get("/welcome/crack/secret/Parle-G/teapot", (req, res) => {
+  res.set("X-Next-Path", "/welcome/crack"); // set BEFORE send
   res.send(`
     <html>
       <head>
-        <title>secret_part_2:GDG{devs_never_sleep}, go to /final-secret</title>
-        <meta name="hint" content="Check the page source 👀" />
+        <title>Welcome Page</title>
+        <meta name="hint" content="Developers should check headers too 😉" />
       </head>
       <body>
-        <h2>Good job 🚀</h2>
-        <p>Backend devs peek at the HTML too!</p>
+        <h2>Welcome ${username} 🎉</h2>
+        <p>You’re authenticated! Inspect the response headers for your next clue 🔍</p>
       </body>
     </html>
   `);
 });
 
-// Step 5 → /final-secret (full flag)
-router.get("/welcome/crack/secret/Parle-G/teapot/final-secret", (req, res) => {
-  const finalSecret = process.env.SECRET_KEY;
-  res.json({
-    SecretKey: finalSecret,
-    message: "Congrats 🎉 You followed the developer trail like a pro!"
-  });
+// Step 2
+router.get("/welcome/crack", authMiddleware, (req, res) => {
+  res.cookie("NextPath", "/welcome/crack/secret");
+  res.send(`
+    <html>
+      <head>
+        <title>Step 2</title>
+        <meta name="hint" content="Sometimes answers hide in cookies 🍪" />
+      </head>
+      <body>
+        <h2>Nice job 🚀</h2>
+        <p>You’re moving forward... but check your cookies this time!</p>
+      </body>
+    </html>
+  `);
+});
+// Step 3
+router.get("/welcome/crack/secret", (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>Step 3</title>
+        <meta name="hint" content="Not everything visible is everything shown 👀" />
+      </head>
+      <body>
+        <h2>Good progress 👏</h2>
+        <p>The next clue is invisible at first sight...</p>
+        <!-- Hidden Clue: /welcome/crack/secret/Parle-G -->
+      </body>
+    </html>
+  `);
 });
 
+// Step 4
+router.get("/welcome/crack/secret/Parle-G", (req, res) => {
+  res.status(418).send(`
+    <html>
+      <head>
+        <title>secret_part_1:shh_dont_tell_anyone_the_secret_key_is_</title>
+        <meta name="hint" content="HTTP 418 – I’m a teapot 🍵" />
+      </head>
+      <body>
+        <h2>You hit the teapot 🤖</h2>
+        <p>This is not a normal status... the clue is in the title ⬆️</p>
+      </body>
+    </html>
+  `);
+});
 
+// Step 5
+router.get("/welcome/crack/secret/Parle-G/teapot", (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>Step 5</title>
+        <meta name="hint" content="Open the browser console (F12 → Console) 👀" />
+        <script>
+          console.log("secret_part_2:GDG{devs_never_sleep}");
+          console.log("Next Path: /welcome/crack/secret/Parle-G/teapot/final-secret");
+        </script>
+      </head>
+      <body>
+        <h2>Almost there! 🔑</h2>
+        <p>Backend devs don’t just view source... they check the console too 😏</p>
+      </body>
+    </html>
+  `);
+});
 
+// Final Secret
+router.get("/welcome/crack/secret/Parle-G/teapot/final-secret", (req, res) => {
+  const finalSecret = process.env.SECRET_KEY;
+  res.send(`
+    <html>
+      <head>
+        <title>Final Secret 🎉</title>
+        <meta name="hint" content="You reached the end 🎯" />
+      </head>
+      <body>
+        <h2>Congrats 🎊</h2>
+        <p>Secret Key: <b>${finalSecret}</b></p>
+        <p>You followed all the innovative developer trails 🚀</p>
+      </body>
+    </html>
+  `);
+});
 
 module.exports = router;
