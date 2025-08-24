@@ -3,75 +3,75 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth-middleware.js');
 
-// Step 1
-router.get('/welcome', authMiddleware, (req, res) => {
-  const { username } = req.userInfo;
-
-  res.set("X-Next-Path", "/welcome/crack"); // set BEFORE send
+// Step 1 (HTML comment clue)
+router.get("/welcome", authMiddleware, (req, res) => {
   res.send(`
     <html>
       <head>
-        <title>Welcome Page</title>
-        <meta name="hint" content="Developers should check headers too 😉" />
+        <title>Step 1</title>
+        <meta name="hint" content="Not everything visible is everything shown 👀" />
       </head>
       <body>
-        <h2>Welcome ${username} 🎉</h2>
-        <p>You’re authenticated! Inspect the response headers for your next clue 🔍</p>
+        <h2>Welcome ${req.userInfo.username} 🎉You’re authenticated! </h2>
+        <p>The next clue is invisible at first sight...Inspect it carefully🧐</p>
+        <!-- Hidden Clue:next path is /welcome/crack -->
       </body>
     </html>
   `);
 });
 
-// Step 2
+// Step 2 (QR image)
 router.get("/welcome/crack", authMiddleware, (req, res) => {
-  res.cookie("NextPath", "/welcome/crack/secret");
   res.send(`
     <html>
       <head>
         <title>Step 2</title>
-        <meta name="hint" content="Sometimes answers hide in cookies 🍪" />
       </head>
       <body>
         <h2>Nice job 🚀</h2>
-        <p>You’re moving forward... but check your cookies this time!</p>
+        <p>But the next clue isn’t written here… 👀</p>
+        <img src="./qr.png" alt="Secret clue" />
       </body>
     </html>
   `);
 });
-// Step 3
-router.get("/welcome/crack/secret", (req, res) => {
+
+// Step 3 (Cookie clue)
+router.get("/welcome/crack/secret", authMiddleware, (req, res) => {
+  res.cookie("NextPath", "Parle-G");
   res.send(`
     <html>
       <head>
         <title>Step 3</title>
-        <meta name="hint" content="Not everything visible is everything shown 👀" />
+        <meta name="hint" content="Sometimes answers hide in cookies 🍪" />
       </head>
       <body>
         <h2>Good progress 👏</h2>
-        <p>The next clue is invisible at first sight...</p>
-        <!-- Hidden Clue: /welcome/crack/secret/Parle-G -->
+        <p>You’re moving forward... Mmm Cookies are Tasty😋</p>
       </body>
     </html>
   `);
 });
 
-// Step 4
+// Step 4 (Teapot clue)
 router.get("/welcome/crack/secret/Parle-G", (req, res) => {
   res.status(418).send(`
     <html>
       <head>
-        <title>secret_part_1:shh_dont_tell_anyone_the_secret_key_is_</title>
+        <title>Nextpath is /teapot</title>
         <meta name="hint" content="HTTP 418 – I’m a teapot 🍵" />
       </head>
       <body>
-        <h2>You hit the teapot 🤖</h2>
+        <h2>status : 418</h2>
         <p>This is not a normal status... the clue is in the title ⬆️</p>
+        <h3>secret_part_1:<strong>shh_dont_tell_anyone_the_secret_key_is_<strong><h3>
+        
       </body>
     </html>
   `);
 });
 
-// Step 5
+// Step 5 (Console logs)
 router.get("/welcome/crack/secret/Parle-G/teapot", (req, res) => {
   res.send(`
     <html>
@@ -101,7 +101,7 @@ router.get("/welcome/crack/secret/Parle-G/teapot/final-secret", (req, res) => {
         <meta name="hint" content="You reached the end 🎯" />
       </head>
       <body>
-        <h2>Congrats 🎊</h2>
+        <h2>Congrats ${req.userInfo.username}🎊</h2>
         <p>Secret Key: <b>${finalSecret}</b></p>
         <p>You followed all the innovative developer trails 🚀</p>
       </body>
