@@ -30,7 +30,7 @@ router.get("/welcome/crack", authMiddleware, (req, res) => {
       <body>
         <h2>Nice job 🚀</h2>
         <p>But the next clue isn’t written here… 👀</p>
-        <img src="./qr.png" alt="Secret clue" />
+        <img src="/clues/qr.png" alt="clue" width="250"/>
       </body>
     </html>
   `);
@@ -93,7 +93,6 @@ router.get("/welcome/crack/secret/Parle-G/teapot", (req, res) => {
 
 // Final Secret
 router.get("/welcome/crack/secret/Parle-G/teapot/final-secret", (req, res) => {
-  const finalSecret = process.env.SECRET_KEY;
   res.send(`
     <html>
       <head>
@@ -102,7 +101,7 @@ router.get("/welcome/crack/secret/Parle-G/teapot/final-secret", (req, res) => {
       </head>
       <body>
         <h2>Congrats ${req.userInfo.username}🎊</h2>
-        <p>Secret Key: <b>${finalSecret}</b></p>
+        <p>Secret Key: <b>shh_dont_tell_anyone_the_secret_key_is_GDG{devs_never_sleep}</b></p>
         <p>You followed all the innovative developer trails 🚀</p>
       </body>
     </html>

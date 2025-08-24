@@ -8,6 +8,7 @@ const homeRoutes = require("./routes/home-routes.js");
 const adminRoutes = require("./routes/admin-routes.js");
 
 
+
 connectToDB();
 
 const app = express();
@@ -27,7 +28,7 @@ app.get('/',(req,res)=>{
 app.use('/api/auth', authRoutes);
 app.use("/api/home",homeRoutes);
 app.use("/api/admin",adminRoutes);
-
+app.use("/clues", express.static("clues"));
 
 
 app.listen(PORT, () => {
