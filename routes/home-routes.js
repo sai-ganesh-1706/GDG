@@ -12,7 +12,7 @@ router.get("/welcome", authMiddleware, (req, res) => {
         <meta name="hint" content="Not everything visible is everything shown 👀" />
       </head>
       <body>
-        <h2>Welcome ${req.userInfo.username} 🎉You’re authenticated! </h2>
+        <h2>Welcome ${req.userInfo.username} 🎉You’re authenticated as user! </h2>
         <p>The next clue is invisible at first sight...Inspect it carefully🧐</p>
         <!-- Hidden Clue:next path is /welcome/crack -->
       </body>
