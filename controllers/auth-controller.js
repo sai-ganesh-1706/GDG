@@ -92,13 +92,15 @@ const loginUser = async(req,res) => {
         user.lastLogin = new Date();
         await user.save();
         
-       // Set token in secure cookie (bonus)
-       res.cookie("accessToken", accessToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "strict",
-          maxAge: 30*60*1000
-       });
+       // ✅ auto-adjust cookie settings for local vs production
+    const isProduction = process.env.NODE_ENV === "production";
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: isProduction,          // HTTPS only in production
+      sameSite: isProduction ? "none" : "lax", // allow cross-site in prod
+      maxAge: 30 * 60 * 1000         // 30 mins
+    });
  
        res.status(200).json({
          success : true,
