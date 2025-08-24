@@ -80,7 +80,7 @@ router.get("/welcome/crack/secret/Parle-G/teapot", (req, res) => {
         <meta name="hint" content="Open the browser console (F12 → Console) 👀" />
         <script>
           console.log("secret_part_2:GDG{devs_never_sleep}");
-          console.log("Next Path: /welcome/crack/secret/Parle-G/teapot/final-secret");
+          console.log("Next Path: /welcome/crack/secret/Parle-G/teapot/finalsecret");
         </script>
       </head>
       <body>
