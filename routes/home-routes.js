@@ -100,7 +100,7 @@ router.get("/welcome/crack/secret/Parle-G/teapot/finalsecret", (req, res) => {
         <meta name="hint" content="You reached the end 🎯" />
       </head>
       <body>
-        <h2>Congrats ${req.userInfo.username}🎊</h2>
+        <h2>Congrats🎊</h2>
         <p>Secret Key: <b>shh_dont_tell_anyone_the_secret_key_is_GDG{devs_never_sleep}</b></p>
         <p>You followed all the innovative developer trails 🚀</p>
       </body>
