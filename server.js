@@ -14,7 +14,7 @@ connectToDB();
 const app = express();
 
 const PORT = process.env.PORT || 3000; // PORT  from .env file or by default port 3000
-
+app.use(express.json());
 /*
 app.use(express.json()); is middleware that lets your Express app automatically parse incoming JSON request bodies into JavaScript objects so you can access them with req.body. ✅
 */
