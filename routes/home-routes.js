@@ -92,7 +92,7 @@ router.get("/welcome/crack/secret/Parle-G/teapot", (req, res) => {
 });
 
 // Final Secret
-router.get("/welcome/crack/secret/Parle-G/teapot/final-secret", (req, res) => {
+router.get("/welcome/crack/secret/Parle-G/teapot/finalsecret", (req, res) => {
   res.send(`
     <html>
       <head>
