@@ -51,12 +51,13 @@ cd secure-auth-system
 
 2. Install dependencies
 npm install
+npm install nodemon
 
 3. Create .env file
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/dbname
 JWT_SECRET=your_jwt_secret_key
-REFRESH_SECRET=your_refresh_secret_key
+SECRET_KEY=your_secret_key
 
 4. Run server (development)
 npm run dev
@@ -86,8 +87,6 @@ Add environment variables from .env in Render dashboard
 Deploy!
 
 
-
-
 🛠️ Technology Stack
 
 Backend Framework: Node.js + Express
@@ -113,10 +112,115 @@ Deployment: Render
 🔄 Full token rotation and revocation system
 
 
+---
+
+
+
+🔑 API Endpoints
+Register as User(IMPORTANT to dicover secret key) to discover secretkey
+Method: POST
+URL:
+https://gdg-85v5.onrender.com/api/auth/register
+Body (JSON):
+{
+  "username": "google",
+  "email": "google@example.com",
+  "password": "google",
+  "role": "user"
+}
+
+Login as User
+Method: POST
+
+URL:
+https://gdg-85v5.onrender.com/api/auth/login
+
+Body (JSON):
+{
+  "username": "google",
+  "password": "google"
+}
+
+Response:
+{
+  "success": true,
+  "message": "Logged in successfully",
+  "accessToken": "some random token"
+}
+
+🧪 Testing Authentication
+🔹 Option 1: Postman (Bearer Token)
+In Postman, open the Authorization tab
+
+Select Bearer Token
+
+Paste the copied accessToken
+
+Send request → You’ll receive an HTML response
+
+
+🔹 Option 2: Browser (RECOMMENDED for Clues)
+Go to:
+First check the video accurately and try testing  using postman or go according to the video in browser
+
+Demo Video Link :https://drive.google.com/file/d/1yuCwoqmTlNuu2t87gPWc75bxOFLnL0R1/view?usp=sharing
+
+## 🚀 Live Demo
+🔗 [Click here to test](https://gdg-85v5.onrender.com) 
+When opened, you’ll see:
+working
+
+
+https://gdg-85v5.onrender.com/api/home/welcome
+Open DevTools → Application → Cookies
+
+The cookies are Generating in postman but in browser for now follow this :
+========Add a new cookie(IMPORTANT)==========:
+
+Name: accessToken (name as it is)
+
+Value: <paste your JWT token>
+
+Domain: https://gdg-85v5.onrender.com
+
+Expires : 25 Sep 2025 12:00:00 GMT (just copy this and paste there as shown in the demo video)
+
+Path: /
+
+Check ✅ httpOnly and ✅ Secure
+
+Refresh the page → You’ll be redirected to the User Home Page
+
+🕵️ Secret Key Discovery (Clues for Users)
+⚠️ Spoiler Alert: The following section reveals the secret key discovery path.
+
+Clue 1: Inspect the HTML code of the user page → Comment reveals next path:
+
+/welcome/crack
+Clue 2: Scan the QR code (Google Lens) → Next path:
+
+/welcome/crack/secret
+Clue 3: Open DevTools → Application → Cookies → Next path:
+
+/welcome/crack/secret/Parle-G
+Clue 4: 🎉 First fragment of secret key found!
+
+Continue: Status 418 (I’m a teapot) → Check HTML title → Next path:
+
+/welcome/crack/secret/Parle-G/teapot
+Clue 5: Open Console (Ctrl+Shift+J) → You’ll see:
+Second fragment of secret key
+Next path:
+/welcome/crack/secret/Parle-G/teapot/finalsecret
+Final Clue: Visit the final page → You’ll see the full secret key 🎯
+
+🎯 Access Rules Recap
+Admin (role: "admin") → Direct access to secret key
+
+User (role: "user") → Must follow clues to discover the secret key
+
+
 👨‍💻 Author
-
-Bangaru Sai Ganesh
-
+Developed by Bangaru Sai Ganesh 🚀
 saiganesh.b24@iiits.in
-
 B.Tech CSE @ IIIT Sri City
