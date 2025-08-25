@@ -95,9 +95,9 @@ Render → Deployment environment
 
 1\. Clone the repo
 
-git clone https://github.com/your-username/secure-auth-system.git
+git clone https://github.com/sai-ganesh-1706/GDG
 
-cd secure-auth-system
+cd GDG
 
   
 
@@ -356,7 +356,7 @@ Name: accessToken (name as it is)
 
   
 
-Value: <paste your JWT token>
+Value: paste your JWT token(accessToken when you login)
 
   
 
